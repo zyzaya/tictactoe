@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Input
   attr_reader :exit_code
 
