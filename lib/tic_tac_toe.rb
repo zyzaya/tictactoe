@@ -80,5 +80,3 @@ class TicTacToe
     @values = [*1..9].map(&:to_s)
   end
 end
-
-TicTacToe.new.start_game
