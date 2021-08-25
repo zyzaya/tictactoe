@@ -22,6 +22,8 @@ class TicTacToe
   end
 
   def start_game
+    # loop should be its own method - play_game
+    # ending of game/replay should be its own method
     reset_game
     winner = false
     until winner
@@ -52,8 +54,11 @@ class TicTacToe
   end
 
   private
-
+  # play_turn, check_for_winner, and reset_game should be public
   def play_turn(player)
+    # should accept input, valid_input as parameters, decoupling input
+    # should return the cell index, decoupling @values
+    # call to @input.get_input (maybe) should be its own function
     valid_input = @values.select do |v|
       v.downcase != X && v.downcase != O
     end
@@ -64,6 +69,7 @@ class TicTacToe
   end
 
   def check_for_winner
+    # values should be a parameter
     winner = false
     WIN_VALUES.each do |w|
       if w.all? { |v| @values[v] == X }
@@ -77,6 +83,7 @@ class TicTacToe
   end
 
   def reset_game
+    # should return a value
     @values = [*1..9].map(&:to_s)
   end
 end
