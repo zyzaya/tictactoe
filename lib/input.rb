@@ -1,17 +1,11 @@
 # frozen_string_literal: true
 
 class Input
-  attr_reader :exit_code
-
-  def initialize(exit_code)
-    @exit_code = exit_code
-  end
-
   def get_input(info, retry_text, valid_input)
     # input should accept exit_code as parameter
     # downcasing valid input should be its own method
     puts info
-    valid_input = (valid_input + @exit_code).map(&:downcase)
+    valid_input = downcase_valid_input(valid_input)
 
     valid = false
     until valid
@@ -20,5 +14,9 @@ class Input
       puts retry_text unless valid
     end
     input
+  end
+
+  def downcase_valid_input(valid_input)
+    valid_input.map(&:downcase)
   end
 end
