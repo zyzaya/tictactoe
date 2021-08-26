@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
+# Retrieves input from the command from a set of specified values
 class Input
   def get_input(info, retry_text, valid_input)
-    # input should accept exit_code as parameter
-    # downcasing valid input should be its own method
     puts info
     valid_input = downcase_valid_input(valid_input)
 
