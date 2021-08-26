@@ -18,11 +18,15 @@ class TicTacToe
 
   def start_game(input)
     values = generate_empty_board
+    run_game(values)
+    winner = check_for_winner(values)
+    restart_game(input, winner) if winner
+  end
+
+  def run_game(values)
     current_player = @first_player
     continue = true
     continue = play_turn(values, current_player, input) while continue
-    winner = check_for_winner(values)
-    restart_game(input, winner) if winner
   end
 
   def restart_game(input, winner)
@@ -40,7 +44,7 @@ class TicTacToe
 
     board[cell] = current_player
     winner = check_for_winner(board)
-    return false unless winner
+    return false if winner
 
     next_player(current_player)
   end
