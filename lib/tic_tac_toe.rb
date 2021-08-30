@@ -18,15 +18,18 @@ class TicTacToe
 
   def start_game(input)
     values = generate_empty_board
-    run_game(values)
+    run_game(values, input)
     winner = check_for_winner(values)
     restart_game(input, winner) if winner
   end
 
-  def run_game(values)
+  def run_game(values, input)
     current_player = @first_player
     continue = true
-    continue = play_turn(values, current_player, input) while continue
+    while continue
+      continue = play_turn(values, current_player, input)
+      current_player = continue if continue
+    end
   end
 
   def restart_game(input, winner)
@@ -39,11 +42,11 @@ class TicTacToe
 
   def play_turn(values, current_player, input)
     puts board(values)
-    cell = player_input(current_player, available_cells(board), input)
-    return false unless cell
+    cell = player_input(current_player, available_cells(values + @exit_code), input)
+    return false if !cell || @exit_code.include?(cell)
 
-    board[cell] = current_player
-    winner = check_for_winner(board)
+    values[cell] = current_player
+    winner = check_for_winner(values)
     return false if winner
 
     next_player(current_player)
@@ -79,10 +82,10 @@ class TicTacToe
   def check_for_winner(board)
     winner = false
     WIN_VALUES.each do |w|
-      if w.all? { |v| board[v] == X }
-        winner = X
-      elsif w.all? { |v| board[v] == O }
-        winner = O
+      if w.all? { |v| board[v] == @first_player }
+        winner = @first_player
+      elsif w.all? { |v| board[v] == @second_player }
+        winner = @second_player
       end
       break if winner
     end

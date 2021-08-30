@@ -1,7 +1,20 @@
-require 'tic_tac_toe.rb'
+# frozen_string_literal: true
+
+require 'tic_tac_toe'
 
 describe TicTacToe do
+  subject(:tictactoe) { described_class.new('x', 'o', %w[e exit]) }
+
   describe '#start_game' do
+    let(:input) { instance_double('input') }
+    # before do
+      
+    # end
+
+    it 'generates an empty board' do
+      expect(tictactoe).to receive(:generate_empty_board)
+      tictactoe.start_game(input)
+    end
     # calls generate_game_board
     # calls run_game
     # calls check_for_winner
