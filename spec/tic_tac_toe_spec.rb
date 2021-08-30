@@ -7,18 +7,41 @@ describe TicTacToe do
 
   describe '#start_game' do
     let(:input) { instance_double('input') }
-    # before do
-      
-    # end
+    let(:game_board) { [*1..9].map(&:to_s) }
+
+    before do
+      allow(tictactoe).to receive(:generate_empty_board).and_return(game_board)
+      allow(tictactoe).to receive(:run_game)
+      allow(tictactoe).to receive(:check_for_winner)
+      allow(tictactoe).to receive(:restart_game)
+    end
 
     it 'generates an empty board' do
-      expect(tictactoe).to receive(:generate_empty_board)
+      expect(tictactoe).to receive(:generate_empty_board).and_return(game_board)
       tictactoe.start_game(input)
     end
-    # calls generate_game_board
-    # calls run_game
-    # calls check_for_winner
-    # calls restart game only if there is a winner
+
+    it 'calls run_game with an empty board and input' do
+      expect(tictactoe).to receive(:run_game).with(game_board, input)
+      tictactoe.start_game(input)
+    end
+
+    it 'calls check_for_winner with board values' do
+      expect(tictactoe).to receive(:check_for_winner).with(game_board)
+      tictactoe.start_game(input)
+    end
+
+    it 'calls check_for_winner if there is a winner' do
+      allow(tictactoe).to receive(:check_for_winner).and_return(true)
+      expect(tictactoe).to receive(:restart_game).with(input, true)
+      tictactoe.start_game(input)
+    end
+
+    it 'does not call check_for_winner if there is no winner' do
+      allow(tictactoe).to receive(:check_for_winner).and_return(false)
+      expect(tictactoe).not_to receive(:restart_game)
+      tictactoe.start_game(input)
+    end
   end
 
   describe '#run_game' do
