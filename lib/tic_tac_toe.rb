@@ -4,6 +4,8 @@ require_relative 'input'
 
 # Allows for a command line game of TicTacToe
 class TicTacToe
+  attr_reader :first_player, :second_player
+  
   WIN_VALUES = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8],
     [0, 3, 6], [1, 4, 7], [2, 5, 8],
@@ -25,11 +27,7 @@ class TicTacToe
 
   def run_game(values, input)
     current_player = @first_player
-    continue = true
-    while continue
-      continue = play_turn(values, current_player, input)
-      current_player = continue if continue
-    end
+    current_player = play_turn(values, current_player, input) while current_player
   end
 
   def restart_game(input, winner)

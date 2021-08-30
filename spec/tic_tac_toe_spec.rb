@@ -45,8 +45,23 @@ describe TicTacToe do
   end
 
   describe '#run_game' do
-    # loop runs while continue returns true
-    # loop ends when continue returns false
+    let(:input) { instance_double('input') }
+    let(:game_board) { [*1..9].map(&:to_s) }
+
+    before do
+      allow(tictactoe).to receive(:play_turn).and_return(true, true, false)
+    end
+
+    it 'calls play_turn' do
+      player = tictactoe.first_player
+      expect(tictactoe).to receive(:play_turn).with(game_board, player, input)
+      tictactoe.run_game(game_board, input)
+    end
+
+    it 'calls play_turn three times when play_turn returns true twice and false once' do
+      expect(tictactoe).to receive(:play_turn).exactly(3)
+      tictactoe.run_game(game_board, input)
+    end
   end
 
   describe '#play_turn' do
