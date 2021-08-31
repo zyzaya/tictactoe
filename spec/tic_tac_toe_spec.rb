@@ -65,14 +65,69 @@ describe TicTacToe do
   end
 
   describe '#play_turn' do
-    # prints values
-    # calls player input
-    # changes the board
-    # calls check_for_winner
-    # calls next_player
-    # returns false if the game should not continue
-    #   player input is nil - meaning no input was given
-    #   winner is true - a player has won
+    let(:input) { instance_double('input') }
+    let(:game_board) { [*1..9].map(&:to_s) }
+    let(:player) { tictactoe.first_player }
+
+    before do
+      allow(tictactoe).to receive(:player_input)
+      allow(tictactoe).to receive(:check_for_winner)
+      allow(tictactoe).to receive(:next_player)
+    end
+
+    it 'prints values' do
+      display = <<~BOARD
+
+        #{game_board[6]} | #{game_board[7]} | #{game_board[8]}
+        #{game_board[3]} | #{game_board[4]} | #{game_board[5]}
+        #{game_board[0]} | #{game_board[1]} | #{game_board[2]}
+
+      BOARD
+      expect(tictactoe).to receive(:puts).with(display)
+      tictactoe.play_turn(game_board, player, input)
+    end
+
+    it 'calls player_input' do
+      available_cells = [1, 2, 3]
+      allow(tictactoe).to receive(:available_cells).and_return(available_cells)
+      expect(tictactoe).to receive(:player_input).with(player, available_cells, input)
+      tictactoe.play_turn(game_board, player, input)
+    end
+
+    it 'returns false if cell is falsey' do
+      cell = false
+      allow(tictactoe).to receive(:player_input).and_return(cell)
+      result = tictactoe.play_turn(game_board, player, input)
+      expect(result).to be_falsey
+    end
+
+    it 'changes the board' do
+      cell = 2
+      allow(tictactoe).to receive(:player_input).and_return(cell)
+      tictactoe.play_turn(game_board, player, input)
+      expect(game_board[cell]).to eq(player)
+    end
+
+    it 'calls check_for_winner' do
+      cell = 2
+      allow(tictactoe).to receive(:player_input).and_return(cell)
+      expect(tictactoe).to receive(:check_for_winner)
+      tictactoe.play_turn(game_board, player, input)
+    end
+
+    it 'returns false if there is a winner' do
+      cell = 2
+      allow(tictactoe).to receive(:player_input).and_return(cell)
+      allow(tictactoe).to receive(:check_for_winner).and_return(player)
+      tictactoe.play_turn(game_board, player, input)
+    end
+
+    it 'calls next player' do
+      cell = 2
+      allow(tictactoe).to receive(:player_input).and_return(cell)
+      expect(tictactoe).to receive(:next_player).with(player)
+      tictactoe.play_turn(game_board, player, input)
+    end
   end
 
   describe '#restart_game' do

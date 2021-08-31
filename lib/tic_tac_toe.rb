@@ -41,7 +41,7 @@ class TicTacToe
   def play_turn(values, current_player, input)
     puts board(values)
     cell = player_input(current_player, available_cells(values + @exit_code), input)
-    return false if !cell || @exit_code.include?(cell)
+    return false unless cell
 
     values[cell] = current_player
     winner = check_for_winner(values)
