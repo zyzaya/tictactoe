@@ -167,7 +167,6 @@ describe TicTacToe do
 
   describe '#player_input' do
     let(:input) { instance_double('input') }
-    let(:game_board) { [*1..9].map(&:to_s) }
     let(:player) { tictactoe.first_player }
     let(:valid) { %w[x o w n] }
 
@@ -192,7 +191,15 @@ describe TicTacToe do
   end
 
   describe '#available_cells' do
-    # it returns an array of cells that are not marked with player icons
+    let(:game_board) { [*1..9].map(&:to_s) }
+
+    it 'returns an array of cells not marked with player icons' do
+      game_board[0] = tictactoe.first_player
+      game_board[5] = tictactoe.second_player
+      result = tictactoe.available_cells(game_board)
+      result = result.none? { |v| [tictactoe.first_player, tictactoe.second_player].include?(v) }
+      expect(result).to be_truthy
+    end
   end
 
   describe '#check_for_winner' do
