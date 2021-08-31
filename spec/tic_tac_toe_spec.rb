@@ -131,8 +131,20 @@ describe TicTacToe do
   end
 
   describe '#restart_game' do
-    # calls start_game if input is yes
-    # if input is not yes does not call start_game.
+    let(:input) { instance_double('input') }
+    let(:winner) { tictactoe.first_player }
+
+    it 'calls start_game if input is yes' do
+      allow(input).to receive(:get_input).and_return('yes')
+      expect(tictactoe).to receive(:start_game)
+      tictactoe.restart_game(input, winner)
+    end
+
+    it 'does not call start_game if input is no' do
+      allow(input).to receive(:get_input).and_return('no')
+      expect(tictactoe).not_to receive(:start_game)
+      tictactoe.restart_game(input, winner)
+    end
   end
 
   describe '#board' do

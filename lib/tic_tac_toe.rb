@@ -35,7 +35,7 @@ class TicTacToe
     yes_input = %w[y yes]
     no_input = %w[n no]
     again = input.get_input("#{winner} wins! Play again? (y/n)", retry_text, yes_input + no_input)
-    start_game if yes_input.include?(again)
+    start_game(input) if yes_input.include?(again)
   end
 
   def play_turn(values, current_player, input)
