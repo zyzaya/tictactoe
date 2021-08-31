@@ -148,7 +148,20 @@ describe TicTacToe do
   end
 
   describe '#board' do
-    # returns a formatted string of an array of 9 values
+    let(:display) {
+      <<~BOARD
+
+        #{game_board[6]} | #{game_board[7]} | #{game_board[8]}
+        #{game_board[3]} | #{game_board[4]} | #{game_board[5]}
+        #{game_board[0]} | #{game_board[1]} | #{game_board[2]}
+
+      BOARD
+    }
+    let(:game_board) { [*1..9].map(&:to_s) }
+    it 'returns a formatted string of an array of nine values' do
+      result = tictactoe.board(game_board)
+      expect(result).to eq(display)
+    end
   end
 
   describe '#player_input' do
