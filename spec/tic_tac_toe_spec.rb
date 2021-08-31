@@ -220,11 +220,20 @@ describe TicTacToe do
   end
 
   describe '#next_player' do
-    # returns first player if current is second player
-    # returns second player if current is first player
+    it 'returns the player that is not the current player' do
+      current_player = tictactoe.first_player
+      result = tictactoe.next_player(current_player)
+      expect(result).to eq(tictactoe.second_player)
+    end
   end
 
-  describe '#generate_board' do
+  describe '#generate_empty_board' do
+    let(:game_board) { [*1..9].map(&:to_s) }
+
+    it 'returns an array of the numbers 1 to 9, as strings' do
+      result = tictactoe.generate_empty_board
+      expect(result).to eql(game_board)
+    end
     # returns an array of the numbers 1 to 9 (as strings)
   end
 end
