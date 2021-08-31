@@ -203,8 +203,20 @@ describe TicTacToe do
   end
 
   describe '#check_for_winner' do
-    # returns the character of the winner if there is one
-    # returns false if there is no winner
+    let(:game_board) { [*1..9].map(&:to_s) }
+
+    it 'returns the character of the winner if there is one' do
+      game_board[0] = tictactoe.first_player
+      game_board[4] = tictactoe.first_player
+      game_board[8] = tictactoe.first_player
+      result = tictactoe.check_for_winner(game_board)
+      expect(result).to eql(tictactoe.first_player)
+    end
+
+    it 'returns false if there is no winner' do
+      result = tictactoe.check_for_winner(game_board)
+      expect(result).to be_falsey
+    end
   end
 
   describe '#next_player' do
