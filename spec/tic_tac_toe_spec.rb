@@ -148,7 +148,7 @@ describe TicTacToe do
   end
 
   describe '#board' do
-    let(:display) {
+    let(:display) do
       <<~BOARD
 
         #{game_board[6]} | #{game_board[7]} | #{game_board[8]}
@@ -156,7 +156,8 @@ describe TicTacToe do
         #{game_board[0]} | #{game_board[1]} | #{game_board[2]}
 
       BOARD
-    }
+    end
+
     let(:game_board) { [*1..9].map(&:to_s) }
     it 'returns a formatted string of an array of nine values' do
       result = tictactoe.board(game_board)
@@ -165,9 +166,29 @@ describe TicTacToe do
   end
 
   describe '#player_input' do
-    # calls input.get_input
-    # it returns the integer of the cell - 1
-    # it returns false if no input is given/the exit code is given
+    let(:input) { instance_double('input') }
+    let(:game_board) { [*1..9].map(&:to_s) }
+    let(:player) { tictactoe.first_player }
+    let(:valid) { %w[x o w n] }
+
+    it 'calls get_input' do
+      expect(input).to receive(:get_input)
+      tictactoe.player_input(player, valid, input)
+    end
+
+    it 'returns the integer of the given input minus one' do
+      given = '10'
+      allow(input).to receive(:get_input).and_return(given)
+      result = tictactoe.player_input(player, valid, input)
+      expect(result).to eql(9)
+    end
+
+    it 'returns false if exit code is given' do
+      given = 'e'
+      allow(input).to receive(:get_input).and_return(given)
+      result = tictactoe.player_input(player, valid, input)
+      expect(result).to be_falsey
+    end
   end
 
   describe '#available_cells' do
